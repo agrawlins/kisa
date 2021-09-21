@@ -27,23 +27,47 @@ router.get('/:id', async (req, res) => {
 });
 
 //CREATES ONE NEW USER
+// router.post('/', async (req, res) => {
+//     try{
+//         const{error}=validateUser(req.body);
+//         if (error)
+//             return res.status(400).send(error);
+
+//         const user = new User({
+//             firstName: req.body.firstName,
+//             lastName: req.body.lastName
+//         });
+//         await user.save();
+//         return res.send(user);
+//     }catch (ex) {
+//         return res.status(500).send(`Internal Server Error: ${ex}`);
+//     }
+// });
+
+//ALLOWS CLIENT TO CREATE ONE USER
 router.post('/', async (req, res) => {
     try{
         const{error}=validateUser(req.body);
         if (error)
-            return res.status(400).send(error);
+            return res.status(400).send(error.details[0].message);
 
-        const user = new User({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName
+        let user = await User.findOne({
+            email: req.body.email
         });
+        if (user)
+            return res.status(400).send(`${user.email} is already registered.\n Please try signing in or use a different email address.`);
+        user = new User({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: req.body.password
+        })
         await user.save();
-        return res.send(user);
+        return res.send({_id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email});
     }catch (ex) {
         return res.status(500).send(`Internal Server Error: ${ex}`);
     }
 });
-
 //ADDS PRODUCT TO USER SHOPPING CART
 router.post('/:userId/shoppingCart/:productId', async (req, res) => {
     try{

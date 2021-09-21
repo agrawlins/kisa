@@ -3,8 +3,10 @@ const Joi = require('joi');
 const { productSchema } = require('./product');
 
 const userSchema = new mongoose.Schema({
-    firstName: {type: String, required: true, minlength: 2, maxlength: 255},
-    lastName: {type: String, required: true, minlength: 2, maxlength: 255},
+    firstName: {type: String, required: true, minlength: 5, maxlength: 50},
+    lastName: {type: String, required: true, minlength: 5, maxlength: 50},
+    email: {type: String, unique: true, required: true, minlength: 5, maxlength: 255},
+    password: {type: String, required: true, maxlength: 1024, minlength:5},
     isGoldMember: {type: Boolean, default: false},
     shoppingCart: {type: [productSchema], default: []},
 });
@@ -15,6 +17,8 @@ function validateUser(user) {
     const schema = Joi.object({
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
+        email: Joi.string().min(5).max(255).required().email(),
+        password: Joi.string().min(5).max(1024).required()
     });
     return schema.validate(user);
 }
