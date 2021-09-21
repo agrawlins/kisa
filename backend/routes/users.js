@@ -1,6 +1,8 @@
 const {User, validateUser} = require('../models/user');
 const {Product, validateProduct} = require('../models/product');
 const bcrypt = require('bcrypt');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 
@@ -27,24 +29,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-//CREATES ONE NEW USER
-// router.post('/', async (req, res) => {
-//     try{
-//         const{error}=validateUser(req.body);
-//         if (error)
-//             return res.status(400).send(error);
-
-//         const user = new User({
-//             firstName: req.body.firstName,
-//             lastName: req.body.lastName
-//         });
-//         await user.save();
-//         return res.send(user);
-//     }catch (ex) {
-//         return res.status(500).send(`Internal Server Error: ${ex}`);
-//     }
-// });
-
 //ALLOWS CLIENT TO CREATE ONE USER
 router.post('/', async (req, res) => {
     try{
@@ -65,6 +49,17 @@ router.post('/', async (req, res) => {
             password: await bcrypt.hash(req.body.password, salt)
         })
         await user.save();
+
+        const token = jwt.sign(
+            {_id: user._id, firstName: user.firstName, lastName: user.lastName},
+            config.get('jwtSecret')
+        );
+
+        return res
+        .header('x-auth-token', token)
+        .header('access-control-expose-headers', 'x-auth-token')
+        .send({_id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email});
+
         return res.send({_id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email});
     }catch (ex) {
         return res.status(500).send(`Internal Server Error: ${ex}`);
