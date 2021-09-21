@@ -1,5 +1,5 @@
-const {User} = require('../models/user');
-const {Product, validate} = require('../models/product');
+const {User, validateUser} = require('../models/user');
+const {Product, validateProduct} = require('../models/product');
 const express = require('express');
 const router = express.Router();
 
@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
 //CREATES ONE NEW USER
 router.post('/', async (req, res) => {
     try{
-        const{error}=validate(req.body);
+        const{error}=validateUser(req.body);
         if (error)
             return res.status(400).send(error);
 
@@ -67,7 +67,7 @@ router.post('/:userId/shoppingCart/:productId', async (req, res) => {
 //UPDATES USER INFORMATION
 router.put('/:id', async (req, res) => {
     try{
-        const{error}=validate(req.body);
+        const{error}=validateUser(req.body);
         if (error)
             return res.status(400).send(error);
 
@@ -93,7 +93,7 @@ router.put('/:id', async (req, res) => {
 //UPDATES PRODUCT INFO IN USER'S SHOPPING CART
 router.put('/:userId/shoppingCart/:productId', async (req, res) => {
     try{
-        const{error}=validate(req.body);
+        const{error}=validateProduct(req.body);
         if (error)
             return res.status(400).send(error);
 
