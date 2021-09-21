@@ -1,5 +1,6 @@
 const {User, validateUser} = require('../models/user');
 const {Product, validateProduct} = require('../models/product');
+const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 
@@ -56,11 +57,12 @@ router.post('/', async (req, res) => {
         });
         if (user)
             return res.status(400).send(`${user.email} is already registered.\n Please try signing in or use a different email address.`);
+        const salt = await bcrypt.genSalt(10);
         user = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
-            password: req.body.password
+            password: await bcrypt.hash(req.body.password, salt)
         })
         await user.save();
         return res.send({_id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email});
