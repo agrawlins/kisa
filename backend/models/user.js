@@ -13,7 +13,9 @@ const userSchema = new mongoose.Schema({
     shoppingCart: {type: [productSchema], default: []},
 });
 
-
+userSchema.methods.generateAuthToken = function () {
+    return jwt.sign({_id: this._id, firstName: this.firstName, lastName: this.lastName}, config.get('jwtSecret'));
+};
 
 const User = mongoose.model('User', userSchema);
 

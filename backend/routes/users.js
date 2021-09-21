@@ -1,8 +1,7 @@
 const {User, validateUser} = require('../models/user');
 const {Product, validateProduct} = require('../models/product');
 const bcrypt = require('bcrypt');
-const config = require('config');
-const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth')
 const express = require('express');
 const router = express.Router();
 
@@ -50,10 +49,7 @@ router.post('/', async (req, res) => {
         })
         await user.save();
 
-        const token = jwt.sign(
-            {_id: user._id, firstName: user.firstName, lastName: user.lastName},
-            config.get('jwtSecret')
-        );
+        const token = user.generateAuthToken();
 
         return res
         .header('x-auth-token', token)
@@ -66,7 +62,7 @@ router.post('/', async (req, res) => {
     }
 });
 //ADDS PRODUCT TO USER SHOPPING CART
-router.post('/:userId/shoppingCart/:productId', async (req, res) => {
+router.post('/:userId/shoppingCart/:productId', auth, async (req, res) => {
     try{
         const user = await User.findById(req.params.userId);
         if(!user)
@@ -112,7 +108,7 @@ router.put('/:id', async (req, res) => {
 });
 
 //UPDATES PRODUCT INFO IN USER'S SHOPPING CART
-router.put('/:userId/shoppingCart/:productId', async (req, res) => {
+router.put('/:userId/shoppingCart/:productId', auth, async (req, res) => {
     try{
         const{error}=validateProduct(req.body);
         if (error)
@@ -151,7 +147,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 //DELETES A PRODUCT IN USER'S SHOPPING CART
-router.delete('/:userId/shoppingCart/:productId', async (req, res) => {
+router.delete('/:userId/shoppingCart/:productId', auth, async (req, res) => {
     try{
         const user = await User.findById(req.params.userId);
         if(!user)
