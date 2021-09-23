@@ -136,11 +136,11 @@ router.delete('/:policeId/kisaTracker/:kisaId', auth, async (req, res) => {
     try{
         const police = await Police.findById(req.params.policeId);
         if(!police)
-            return res.status(400).send(`The user with id "${req.params.id}" does not exist`);
+            return res.status(400).send(`The user with id "${req.params.policeId}" does not exist`);
 
-        const kisa = await police.assistTracker.id(req.params.kisaId);
+        let kisa = await police.kisaTracker.id(req.params.kisaId);
         if(!kisa)
-            return res.status(400).send(`The user with id "${req.params.id}" does not exist.`);
+            return res.status(400).send(`The user with id "${req.params.kisaId}" does not exist.`);
         
         kisa = await kisa.remove();
 

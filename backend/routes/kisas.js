@@ -121,15 +121,15 @@ router.delete('/:id', async (req, res) => {
 });
 
 //DELETES A DID IN KISA'S ASSISTS TRACKER
-router.delete('/:kisaId/assistsTracker/:didId', auth, async (req, res) => {
+router.delete('/:kisaId/assistTracker/:didId', auth, async (req, res) => {
     try{
         const kisa = await Kisa.findById(req.params.kisaId);
         if(!kisa)
-            return res.status(400).send(`The kisa with id "${req.params.id}" does not exist`);
+            return res.status(400).send(`The user with id "${req.params.kisaId}" does not exist`);
 
-        const did = await kisa.assistTracker.id(req.params.didId);
+        let did = await kisa.assistTracker.id(req.params.didId);
         if(!did)
-            return res.status(400).send(`The did with id "${req.params.id}" does not exist.`);
+            return res.status(400).send(`The user with id "${req.params.didId}" does not exist.`);
         
         did = await did.remove();
 
