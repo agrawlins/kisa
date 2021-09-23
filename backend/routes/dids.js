@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-//GETS ALL didS & POLICE
+//GETS ALL DIDS & POLICE
 router.get('/', async (req, res) => {
     try{
         const dids = await Did.find();

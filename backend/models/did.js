@@ -11,7 +11,9 @@ const didSchema = new mongoose.Schema({
     img:{
         data: Buffer,
         contentType: String
-    }
+    },
+    didLatLong: {type: Array, required: true, coordinates: [((Math.random()*10)+70), ((Math.random()*10)+40)]},
+    inDistress: {type: Boolean, required: true, default: false}
 });
 
 didSchema.methods.generateAuthToken = function () {

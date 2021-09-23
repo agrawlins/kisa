@@ -101,7 +101,7 @@ router.put('/:id', async (req, res) => {
         {new: true}
         );
         if(!police)
-            return res.status(400).send(`The police with id "${req.params.id}" does not exist.`)
+            return res.status(400).send(`The user with id "${req.params.id}" does not exist.`)
             
 
         await police.save();
@@ -131,13 +131,21 @@ router.post('/:policeId/kisaTracker/:kisaId', auth, async (req, res) => {
     }
 });
 
-//DELETES A KISA ACCOUNT
-router.delete('/:id/kisas/:kisaId', async (req, res) => {
+//DELETES KISA FROM POLICE'S KISA TRACKER
+router.delete('/:policeId/kisaTracker/:kisaId', auth, async (req, res) => {
     try{
-        const kisa = await Kisa.findByIdAndRemove(req.params.id);
+        const police = await Police.findById(req.params.policeId);
+        if(!police)
+            return res.status(400).send(`The user with id "${req.params.id}" does not exist`);
+
+        const kisa = await police.assistTracker.id(req.params.kisaId);
         if(!kisa)
-            return res.status(400).send(`The kisa with id "${req.params.id}" does not exist`);
-        return res.send(kisa);
+            return res.status(400).send(`The user with id "${req.params.id}" does not exist.`);
+        
+        kisa = await kisa.remove();
+
+        await police.save();
+        return res.send(police);
     }catch (ex){
         return res.status(500).send(`Internal Server Error: ${ex}`);
     }

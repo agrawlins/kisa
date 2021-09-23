@@ -13,7 +13,10 @@ const kisaSchema = new mongoose.Schema({
     img:{
         data: Buffer,
         contentType: String
-    }
+    },
+    kisaLatLong: {type: Array, default: [((Math.random()*10)+70), ((Math.random()*10)+40)]},
+    responding: {type: Boolean, required: true, default: false},
+    respondingTo: {type: [didSchema]}
 });
 
 kisaSchema.methods.generateAuthToken = function () {
