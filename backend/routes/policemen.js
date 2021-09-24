@@ -43,7 +43,7 @@ router.get('/:id', admin, auth, async (req, res) => {
 });
 
 //ALLOWS CLIENT TO CREATE ONE POLICE
-router.post('/', admin, auth, async (req, res) => {
+router.post('/', async (req, res) => {
     try{
         const{error}=validatePolice(req.body);
         if (error)

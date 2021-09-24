@@ -12,7 +12,7 @@ app.use(express.json());
 app.use('/api/dids', dids);
 app.use('/api/kisas', kisas);
 app.use('/api/policemen', policemen);
-app.use('/api/auth', auth)
+app.use('/api/auth', auth);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
