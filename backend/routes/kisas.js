@@ -42,6 +42,7 @@ router.post('/', async (req, res) => {
             return res.status(400).send(`${kisa.email} is already registered.\n Please try signing in or use a different email address.`);
         const salt = await bcrypt.genSalt(10);
         kisa = new Kisa({
+            img: req.body.img,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
