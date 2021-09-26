@@ -6,7 +6,7 @@ const { kisaSchema } = require('./kisa');
 const { didSchema } = require('./did');
 
 const policeSchema = new mongoose.Schema({
-    img:{type: String, data: Buffer, required: true},
+    policeImg:{data: Buffer, contentType: String}, 
     firstName: {type: String, required: true, minlength: 1, maxlength: 50},
     lastName: {type: String, required: true, minlength: 1, maxlength: 50},
     email: {type: String, unique: true, required: true, minlength: 5, maxlength: 255},
@@ -26,7 +26,7 @@ const Police = mongoose.model('Policeman', policeSchema);
 
 function validatePolice(police) {
     const schema = Joi.object({
-        img: Joi.string(),
+        policeImg: Joi.string(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         email: Joi.string().min(5).max(255).required().email(),

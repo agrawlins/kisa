@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send(`${police.email} is already registered.\n Please try signing in or use a different email address.`);
         const salt = await bcrypt.genSalt(10);
         police = new Police({
-            img: req.body.img,
+            policeImg: req.body.policeImg,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
@@ -70,7 +70,7 @@ router.post('/', async (req, res) => {
         return res
         .header('x-auth-token', token)
         .header('access-control-expose-headers', 'x-auth-token')
-        .send({_id: police._id, firstName: police.firstName, lastName: police.lastName, email: police.email});
+        .send({_id: police._id, policeId: police.policeId, firstName: police.firstName, lastName: police.lastName, email: police.email});
         
     }catch (ex) {
         return res.status(500).send(`Internal Server Error: ${ex}`);
@@ -104,7 +104,7 @@ router.put('/:id', admin, auth, async (req, res) => {
 });
     
 //GETS ALL KISAS
-router.get('/', admin, auth, async (req, res) => {
+router.get('./kisas', admin, auth, async (req, res) => {
     try{
         const kisas = await Kisa.find();
         return res.send(kisas);

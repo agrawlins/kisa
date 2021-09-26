@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
             return res.status(400).send(`${kisa.email} is already registered.\n Please try signing in or use a different email address.`);
         const salt = await bcrypt.genSalt(10);
         kisa = new Kisa({
-            img: req.body.img,
+            kisaImg: req.body.kisaImg,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
         return res
         .header('x-auth-token', token)
         .header('access-control-expose-headers', 'x-auth-token')
-        .send({_id: kisa._id, firstName: kisa.firstName, lastName: kisa.lastName, email: kisa.email});
+        .send({_id: kisa._id, kisaImg: kisa.kisaImg, firstName: kisa.firstName, lastName: kisa.lastName, email: kisa.email});
 
     }catch (ex) {
         return res.status(500).send(`Internal Server Error: ${ex}`);
@@ -65,7 +65,7 @@ router.post('/', async (req, res) => {
 
 
 //UPDATES KISA INFORMATION
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     try{
         const{error}=validateKisa(req.body);
         if (error)
@@ -91,7 +91,7 @@ router.put('/:id', async (req, res) => {
 });
     
 //DELETES A KISA ACCOUNT
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try{
         const kisa = await Kisa.findByIdAndRemove(req.params.id);
         if(!kisa)
@@ -103,7 +103,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 //GETS ONE DID BY ID
-router.get('/:kisaId/assistTracker/:didId', async (req, res) => {
+router.get('/:kisaId/assistTracker/:didId', auth, async (req, res) => {
     try{
         const did = await Did.findById(req.params.didId);
         if(!did)
@@ -113,6 +113,16 @@ router.get('/:kisaId/assistTracker/:didId', async (req, res) => {
         return res.status(500).send(`Internal Server Error: ${ex}`);
     }
 });
+
+// //GETS ALL DIDS
+// router.get('./dids', async (req, res) => {
+//     try{
+//         const dids = await Did.find();
+//         return res.send(dids);
+//     }catch (ex) {
+//         return res.status(500).send(`Internal Server Error: ${ex}`);
+//     }
+// });
 
 //ADDS A DID TO KISA'S ASSIST TRACKER
 router.post('/:kisaId/assistTracker/:didId', auth, async (req, res) => {

@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const { didSchema } = require('./did');
 
 const kisaSchema = new mongoose.Schema({
-    img:{type: String, data: Buffer, required: true}, 
+    kisaImg:{data: Buffer, contentType: String}, 
     firstName: {type: String, required: true, minlength: 1, maxlength: 50},
     lastName: {type: String, required: true, minlength: 1, maxlength: 50},
     email: {type: String, unique: true, required: true, minlength: 5, maxlength: 255},
@@ -24,7 +24,7 @@ const Kisa = mongoose.model('Kisa', kisaSchema);
 
 function validateKisa(kisa) {
     const schema = Joi.object({
-        img: Joi.string(),
+        kisaImg: Joi.string(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         email: Joi.string().min(5).max(255).required().email(),

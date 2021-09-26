@@ -4,7 +4,7 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 
 const didSchema = new mongoose.Schema({
-    img:{type: String, data: Buffer, required: true}, 
+    didImg:{data: Buffer, contentType: String}, 
     firstName: {type: String, required: true, minlength: 1, maxlength: 50},
     lastName: {type: String, required: true, minlength: 1, maxlength: 50},
     email: {type: String, unique: true, required: true, minlength: 5, maxlength: 255},
@@ -21,7 +21,7 @@ const Did = mongoose.model('Did', didSchema);
 
 function validateDid(did) {
     const schema = Joi.object({
-        img: Joi.string(),
+        didImg: Joi.string(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         email: Joi.string().min(5).max(255).required().email(),

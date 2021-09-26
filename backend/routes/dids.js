@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send(`${did.email} is already registered.\n Please try signing in or use a different email address.`);
         const salt = await bcrypt.genSalt(10);
         did = new Did({
-            img: req.body.img,
+            didImg: req.body.didImg,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
         return res
         .header('x-auth-token', token)
         .header('access-control-expose-headers', 'x-auth-token')
-        .send({_id: did._id, firstName: did.firstName, lastName: did.lastName, email: did.email});
+        .send({_id: did._id, didImg: did.didImg, firstName: did.firstName, lastName: did.lastName, email: did.email});
         
     }catch (ex) {
         return res.status(500).send(`Internal Server Error: ${ex}`);
