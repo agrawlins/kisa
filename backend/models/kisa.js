@@ -24,7 +24,7 @@ const Kisa = mongoose.model('Kisa', kisaSchema);
 
 function validateKisa(kisa) {
     const schema = Joi.object({
-        kisaImg: Joi.string(),
+        kisaImg: Joi.file(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         email: Joi.string().min(5).max(255).required().email(),

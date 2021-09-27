@@ -26,7 +26,7 @@ const Police = mongoose.model('Policeman', policeSchema);
 
 function validatePolice(police) {
     const schema = Joi.object({
-        policeImg: Joi.string(),
+        policeImg: Joi.file(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         email: Joi.string().min(5).max(255).required().email(),

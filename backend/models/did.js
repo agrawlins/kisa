@@ -21,7 +21,7 @@ const Did = mongoose.model('Did', didSchema);
 
 function validateDid(did) {
     const schema = Joi.object({
-        didImg: Joi.string(),
+        didImg: Joi.file(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         email: Joi.string().min(5).max(255).required().email(),
