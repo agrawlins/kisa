@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 
-var imageSchema = new mongoose.Schema({
+var didImgSchema = new mongoose.Schema({
 	name: String,
 	desc: String,
 	img:
@@ -12,6 +12,26 @@ var imageSchema = new mongoose.Schema({
 	}
 });
 
-//Image is a model which has a schema imageSchema
+var kisaImgSchema = new mongoose.Schema({
+	name: String,
+	desc: String,
+	img:
+	{
+		data: Buffer,
+		contentType: String
+	}
+});
 
-module.exports = new mongoose.model('Image', imageSchema);
+var policeImgSchema = new mongoose.Schema({
+	name: String,
+	desc: String,
+	img:
+	{
+		data: Buffer,
+		contentType: String
+	}
+});
+//Image is a model which has a schema imageSchema
+module.exports = new mongoose.model('did', didImgSchema);
+module.exports = new mongoose.model('kisa', kisaImgSchema);
+module.exports = new mongoose.model('policemen', policeImgSchema);
