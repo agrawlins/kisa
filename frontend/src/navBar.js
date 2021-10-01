@@ -4,18 +4,21 @@ function NavBar() {
     return (
         <nav>
             <ul>
-                <Link to='/'>
-                    <li>Home</li>
-                </Link>
+                <button>
                 <Link to='/did'>
                     <li>Did</li>
                 </Link>
+                </button>
+                <button>
                 <Link to='/kisa'>
                     <li>Kisa</li>
                 </Link>
+                </button>
+                <button>
                 <Link to='/police'>
                     <li>Police</li>
                 </Link>
+                </button>
             </ul>
         </nav>
     )

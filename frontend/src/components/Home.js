@@ -1,7 +1,8 @@
-import { Component } from "react";
+import React from "react";
+import { Switch, Route, Redirect } from 'react-router-dom';
 
-class Home extends Component{
-
+const Login = () => {
+    return (<div></div>  );
 }
-
-export default Home
+ 
+export default Login;
