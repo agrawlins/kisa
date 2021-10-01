@@ -6,7 +6,7 @@ function TitleBar(props) {
         <div className="row row-spacer">
             <div className="col-md-12" style={{padding:0}}>
                 <h1 className="titlebar-nav">
-                To Become a Knight, <br/> You Must Pass Through <br/> Three Trials...
+                LOGIN
                 </h1>
             </div>
         </div>
